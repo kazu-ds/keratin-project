@@ -6,13 +6,13 @@
 <title>Mammalian Keratin Analysis — Tanishq Milani</title>
 <style>
   :root{
-    --ink: #1c2321;
-    --paper: #f6f4ee;
-    --paper-dim: #eeece3;
-    --line: #d8d4c6;
-    --accent: #2f5d50;
-    --accent-soft: #e4ece8;
-    --data: #8a5a2b;
+    --ink: #111111;
+    --paper: #ffffff;
+    --paper-dim: #f0f0f0;
+    --line: #cccccc;
+    --accent: #111111;
+    --accent-soft: #eeeeee;
+    --data: #111111;
     --mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     --serif: 'Source Serif 4', 'Iowan Old Style', 'Georgia', serif;
     --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -24,29 +24,17 @@
     font-family: var(--sans); line-height: 1.6; font-size: 16px;
   }
   header.masthead{
-    border-bottom: 3px solid var(--ink);
+    border-bottom: 1px solid var(--line);
     padding: 2.5rem 1.5rem 1.75rem;
-    background: repeating-linear-gradient(90deg, transparent, transparent 39px, var(--line) 39px, var(--line) 40px);
-    background-size: 40px 100%;
-    background-position: center;
   }
-  .masthead-inner{ max-width: 880px; margin: 0 auto; background: var(--paper); padding: 0 0.5rem; }
-  .eyebrow{
-    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem;
-    display: flex; align-items: center; gap: 0.5rem;
-  }
-  .eyebrow::before{ content: ""; width: 8px; height: 8px; background: var(--accent); display: inline-block; border-radius: 50%; }
+  .masthead-inner{ max-width: 880px; margin: 0 auto; padding: 0 0.5rem; }
   h1.title{
     font-family: var(--serif); font-weight: 600; font-size: clamp(1.9rem, 4vw, 2.9rem);
     margin: 0 0 0.5rem; letter-spacing: -0.01em; line-height: 1.1;
   }
-  h1.title em{ font-style: italic; color: var(--accent); }
-  .byline{ font-size: 0.95rem; color: #4b544f; margin: 0 0 0.25rem; }
+  h1.title em{ font-style: italic; }
+  .byline{ font-size: 0.95rem; color: #555555; margin: 0 0 0.25rem; }
   .byline strong{ color: var(--ink); }
-  .meta-row{ margin-top: 1.1rem; display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; font-family: var(--mono); font-size: 0.78rem; }
-  .meta-pill{ border: 1px solid var(--line); background: var(--paper-dim); padding: 0.25rem 0.6rem; border-radius: 3px; color: #4b544f; }
-  .meta-pill b{ color: var(--ink); }
   .wrap{ max-width: 880px; margin: 0 auto; padding: 0 1.5rem; }
   nav.toc{ max-width: 880px; margin: 0 auto; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--line); }
   nav.toc ol{ list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 0; font-family: var(--mono); font-size: 0.82rem; counter-reset: toc; }
@@ -58,7 +46,7 @@
   section:last-of-type{ border-bottom: none; }
   h2.section-title{ font-family: var(--serif); font-size: 1.65rem; font-weight: 600; margin: 0 0 0.3rem; display: flex; align-items: baseline; gap: 0.6rem; }
   h2.section-title .num{ font-family: var(--mono); font-size: 0.95rem; color: var(--data); font-weight: 500; }
-  .section-sub{ font-size: 0.95rem; color: #4b544f; margin: 0 0 1.6rem; max-width: 60ch; }
+  .section-sub{ font-size: 0.95rem; color: #555555; margin: 0 0 1.6rem; max-width: 60ch; }
   h3.sub-title{ font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin: 2rem 0 0.85rem; padding-bottom: 0.4rem; border-bottom: 1px dashed var(--line); }
   h4.block-title{ font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; color: var(--accent); margin: 1.6rem 0 0.75rem; }
   p{ margin: 0 0 1rem; }
@@ -66,8 +54,8 @@
   ul.lab-list > li{ position: relative; padding-left: 1.3rem; margin-bottom: 0.55rem; }
   ul.lab-list > li::before{ content: "→"; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
   ul.lab-list ul{ list-style: none; padding-left: 1.2rem; margin: 0.4rem 0 0.4rem; }
-  ul.lab-list ul li{ position: relative; padding-left: 1.1rem; margin-bottom: 0.35rem; color: #3a423e; }
-  ul.lab-list ul li::before{ content: "–"; position: absolute; left: 0; color: #9aa39c; }
+  ul.lab-list ul li{ position: relative; padding-left: 1.1rem; margin-bottom: 0.35rem; color: #333333; }
+  ul.lab-list ul li::before{ content: "–"; position: absolute; left: 0; color: #999999; }
   code, .mono{ font-family: var(--mono); background: var(--paper-dim); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.88em; color: var(--accent); }
   a.inline-link{ color: var(--accent); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 2px; }
   a.inline-link:hover{ text-decoration-color: var(--accent); }
@@ -80,14 +68,14 @@
   a.file-link::before{ content: "⬇"; font-size: 0.85em; }
   figure.fig{ margin: 1.4rem 0 1.8rem; }
   figure.fig img{ display: block; max-width: 100%; height: auto; border: 1px solid var(--line); background: #fff; }
-  figure.fig figcaption{ font-family: var(--mono); font-size: 0.78rem; color: #6b746e; margin-top: 0.5rem; max-width: 60ch; }
+  figure.fig figcaption{ font-family: var(--mono); font-size: 0.78rem; color: #666666; margin-top: 0.5rem; max-width: 60ch; }
   figure.fig figcaption .tag{ color: var(--data); }
   .fig-row{ display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; }
   .fig-row figure.fig{ margin: 1.4rem 0 0.4rem; flex: 1 1 260px; }
   .img-placeholder{
     display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.4rem;
-    background: repeating-linear-gradient(45deg, var(--paper-dim), var(--paper-dim) 10px, #e3e0d3 10px, #e3e0d3 20px);
-    border: 1px dashed var(--line); color: #6b746e; font-family: var(--mono); font-size: 0.78rem;
+    background: repeating-linear-gradient(45deg, var(--paper-dim), var(--paper-dim) 10px, #e0e0e0 10px, #e0e0e0 20px);
+    border: 1px dashed var(--line); color: #666666; font-family: var(--mono); font-size: 0.78rem;
     text-align: center; padding: 1.5rem 1rem;
   }
   .img-placeholder b{ color: var(--ink); font-size: 0.82rem; }
@@ -95,11 +83,11 @@
   .stat{ flex: 1 1 140px; padding: 1rem 1.2rem; border-right: 1px solid var(--line); }
   .stat:last-child{ border-right: none; }
   .stat .n{ font-family: var(--mono); font-size: 1.5rem; color: var(--data); font-weight: 600; display: block; }
-  .stat .l{ font-size: 0.78rem; color: #4b544f; }
+  .stat .l{ font-size: 0.78rem; color: #555555; }
   .result-note{ border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 0.9rem 1.1rem; margin: 1.2rem 0; font-size: 0.94rem; }
   .result-note .mono{ background: none; padding: 0; }
   .figure-callout{ font-family: var(--mono); font-size: 0.8rem; color: var(--data); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
-  footer{ max-width: 880px; margin: 0 auto; padding: 2.5rem 1.5rem 3.5rem; font-size: 0.85rem; color: #6b746e; }
+  footer{ max-width: 880px; margin: 0 auto; padding: 2.5rem 1.5rem 3.5rem; font-size: 0.85rem; color: #666666; }
   footer a{ color: var(--accent); }
   @media (max-width: 600px){
     section{ padding: 2rem 0; }
@@ -114,15 +102,8 @@
 
 <header class="masthead">
   <div class="masthead-inner">
-    <p class="eyebrow">Comparative Genomics · Research Notes</p>
     <h1 class="title">Mammalian <em>Keratin</em> Analysis</h1>
     <p class="byline"><strong>Tanishq Milani</strong> — sequence, structural, and synteny analysis of keratin genes across mammalian species</p>
-    <div class="meta-row">
-      <span class="meta-pill"><b>120</b> organisms</span>
-      <span class="meta-pill"><b>4,442</b> keratins</span>
-      <span class="meta-pill">Type I / Type II classification</span>
-      <span class="meta-pill">MSA · Phylogenetics · Synteny</span>
-    </div>
   </div>
 </header>
 
