@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mammalian Keratin Analysis — Tanishq Milani</title>
+<style>
+  :root{
+    --ink: #1c2321;
+    --paper: #f6f4ee;
+    --paper-dim: #eeece3;
+    --line: #d8d4c6;
+    --accent: #2f5d50;
+    --accent-soft: #e4ece8;
+    --data: #8a5a2b;
+    --mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --serif: 'Source Serif 4', 'Iowan Old Style', 'Georgia', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body{
+    margin:0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); line-height: 1.6; font-size: 16px;
+  }
+  header.masthead{
+    border-bottom: 3px solid var(--ink);
+    padding: 2.5rem 1.5rem 1.75rem;
+    background: repeating-linear-gradient(90deg, transparent, transparent 39px, var(--line) 39px, var(--line) 40px);
+    background-size: 40px 100%;
+    background-position: center;
+  }
+  .masthead-inner{ max-width: 880px; margin: 0 auto; background: var(--paper); padding: 0 0.5rem; }
+  .eyebrow{
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .eyebrow::before{ content: ""; width: 8px; height: 8px; background: var(--accent); display: inline-block; border-radius: 50%; }
+  h1.title{
+    font-family: var(--serif); font-weight: 600; font-size: clamp(1.9rem, 4vw, 2.9rem);
+    margin: 0 0 0.5rem; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  h1.title em{ font-style: italic; color: var(--accent); }
+  .byline{ font-size: 0.95rem; color: #4b544f; margin: 0 0 0.25rem; }
+  .byline strong{ color: var(--ink); }
+  .meta-row{ margin-top: 1.1rem; display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; font-family: var(--mono); font-size: 0.78rem; }
+  .meta-pill{ border: 1px solid var(--line); background: var(--paper-dim); padding: 0.25rem 0.6rem; border-radius: 3px; color: #4b544f; }
+  .meta-pill b{ color: var(--ink); }
+  .wrap{ max-width: 880px; margin: 0 auto; padding: 0 1.5rem; }
+  nav.toc{ max-width: 880px; margin: 0 auto; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--line); }
+  nav.toc ol{ list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 0; font-family: var(--mono); font-size: 0.82rem; counter-reset: toc; }
+  nav.toc li{ counter-increment: toc; margin-right: 1.4rem; }
+  nav.toc li::before{ content: counter(toc, decimal-leading-zero) " "; color: var(--data); }
+  nav.toc a{ color: var(--ink); text-decoration: none; border-bottom: 1px solid transparent; }
+  nav.toc a:hover{ border-bottom-color: var(--accent); color: var(--accent); }
+  section{ padding: 2.75rem 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom: none; }
+  h2.section-title{ font-family: var(--serif); font-size: 1.65rem; font-weight: 600; margin: 0 0 0.3rem; display: flex; align-items: baseline; gap: 0.6rem; }
+  h2.section-title .num{ font-family: var(--mono); font-size: 0.95rem; color: var(--data); font-weight: 500; }
+  .section-sub{ font-size: 0.95rem; color: #4b544f; margin: 0 0 1.6rem; max-width: 60ch; }
+  h3.sub-title{ font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin: 2rem 0 0.85rem; padding-bottom: 0.4rem; border-bottom: 1px dashed var(--line); }
+  h4.block-title{ font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; color: var(--accent); margin: 1.6rem 0 0.75rem; }
+  p{ margin: 0 0 1rem; }
+  ul.lab-list{ margin: 0 0 1rem; padding-left: 0; list-style: none; }
+  ul.lab-list > li{ position: relative; padding-left: 1.3rem; margin-bottom: 0.55rem; }
+  ul.lab-list > li::before{ content: "→"; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
+  ul.lab-list ul{ list-style: none; padding-left: 1.2rem; margin: 0.4rem 0 0.4rem; }
+  ul.lab-list ul li{ position: relative; padding-left: 1.1rem; margin-bottom: 0.35rem; color: #3a423e; }
+  ul.lab-list ul li::before{ content: "–"; position: absolute; left: 0; color: #9aa39c; }
+  code, .mono{ font-family: var(--mono); background: var(--paper-dim); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.88em; color: var(--accent); }
+  a.inline-link{ color: var(--accent); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 2px; }
+  a.inline-link:hover{ text-decoration-color: var(--accent); }
+  a.file-link{
+    display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.85rem;
+    color: var(--ink); background: var(--paper-dim); border: 1px solid var(--line); padding: 0.3rem 0.6rem;
+    border-radius: 3px; text-decoration: none; margin: 0.2rem 0.3rem 0.6rem 0;
+  }
+  a.file-link:hover{ border-color: var(--accent); color: var(--accent); }
+  a.file-link::before{ content: "⬇"; font-size: 0.85em; }
+  figure.fig{ margin: 1.4rem 0 1.8rem; }
+  figure.fig img{ display: block; max-width: 100%; height: auto; border: 1px solid var(--line); background: #fff; }
+  figure.fig figcaption{ font-family: var(--mono); font-size: 0.78rem; color: #6b746e; margin-top: 0.5rem; max-width: 60ch; }
+  figure.fig figcaption .tag{ color: var(--data); }
+  .fig-row{ display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; }
+  .fig-row figure.fig{ margin: 1.4rem 0 0.4rem; flex: 1 1 260px; }
+  .img-placeholder{
+    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.4rem;
+    background: repeating-linear-gradient(45deg, var(--paper-dim), var(--paper-dim) 10px, #e3e0d3 10px, #e3e0d3 20px);
+    border: 1px dashed var(--line); color: #6b746e; font-family: var(--mono); font-size: 0.78rem;
+    text-align: center; padding: 1.5rem 1rem;
+  }
+  .img-placeholder b{ color: var(--ink); font-size: 0.82rem; }
+  .stat-strip{ display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--line); margin: 1.5rem 0; }
+  .stat{ flex: 1 1 140px; padding: 1rem 1.2rem; border-right: 1px solid var(--line); }
+  .stat:last-child{ border-right: none; }
+  .stat .n{ font-family: var(--mono); font-size: 1.5rem; color: var(--data); font-weight: 600; display: block; }
+  .stat .l{ font-size: 0.78rem; color: #4b544f; }
+  .result-note{ border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 0.9rem 1.1rem; margin: 1.2rem 0; font-size: 0.94rem; }
+  .result-note .mono{ background: none; padding: 0; }
+  .figure-callout{ font-family: var(--mono); font-size: 0.8rem; color: var(--data); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+  footer{ max-width: 880px; margin: 0 auto; padding: 2.5rem 1.5rem 3.5rem; font-size: 0.85rem; color: #6b746e; }
+  footer a{ color: var(--accent); }
+  @media (max-width: 600px){
+    section{ padding: 2rem 0; }
+    .stat-strip{ flex-direction: column; }
+    .stat{ border-right: none; border-bottom: 1px solid var(--line); }
+    .stat:last-child{ border-bottom: none; }
+  }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="eyebrow">Comparative Genomics · Research Notes</p>
+    <h1 class="title">Mammalian <em>Keratin</em> Analysis</h1>
+    <p class="byline"><strong>Tanishq Milani</strong> — sequence, structural, and synteny analysis of keratin genes across mammalian species</p>
+    <div class="meta-row">
+      <span class="meta-pill"><b>120</b> organisms</span>
+      <span class="meta-pill"><b>4,442</b> keratins</span>
+      <span class="meta-pill">Type I / Type II classification</span>
+      <span class="meta-pill">MSA · Phylogenetics · Synteny</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#processing">Data Processing</a></li>
+    <li><a href="#classification">Classification</a></li>
+    <li><a href="#sequence-analysis">Sequence Analysis</a></li>
+    <li><a href="#coiled-coil">Coiled-Coil Prediction</a></li>
+    <li><a href="#msa">MSA</a></li>
+    <li><a href="#phylogenetics">Phylogenetics</a></li>
+    <li><a href="#synteny">Synteny Analysis</a></li>
+  </ol>
+</nav>
+
+<div class="wrap">
+
+  <section id="overview">
+    <h2 class="section-title"><span class="num">§00</span> Overview</h2>
+    <p>Identify, filter, classify, and analyze keratin datasets across multiple organisms using sequence data — from raw UniProt records through to genomic synteny, covering sequence filtering, Type I/II classification, terminal domain comparison, coiled-coil structure prediction, multiple sequence alignment, phylogenetic reconstruction, and genomic locus analysis.</p>
+  </section>
+
+  <section id="processing">
+    <h2 class="section-title"><span class="num">§01</span> Data Processing &amp; Filtering</h2>
+    <ul class="lab-list">
+      <li>Parsed UniProt (<a class="inline-link" href="https://www.uniprot.org/uniref" target="_blank" rel="noopener">UniRef100</a>) datasets to extract keratin sequences</li>
+      <li>Applied the following filters:
+        <ul>
+          <li>Removed fragments, KAPs, low-quality, microfibrillar, and cochlear keratins</li>
+          <li>Minimum sequence length set to 300</li>
+          <li>For clones and isoforms, retained the sequence with highest length</li>
+          <li>Standardized nomenclature</li>
+        </ul>
+      </li>
+      <li>Due to updates in <code>UniRef</code> and <code>SwissProt</code>, reference proteomes were used instead to avoid data inconsistencies (<a class="inline-link" href="https://www.uniprot.org/proteomes" target="_blank" rel="noopener">Reference Proteomes</a>)</li>
+    </ul>
+  </section>
+
+  <section id="classification">
+    <h2 class="section-title"><span class="num">§02</span> Classification</h2>
+    <ul class="lab-list">
+      <li>Classified keratins into:
+        <ul>
+          <li>Type I</li>
+          <li>Type II</li>
+        </ul>
+      </li>
+    </ul>
+    <a class="file-link" href="./attachments/separatetype_mammals_tvm.py">Classification script (.py)</a>
+
+    <h4 class="block-title">Dataset Organization</h4>
+    <ul class="lab-list">
+      <li>Split mammalian keratin dataset into organism-wise files and keratin-wise files</li>
+      <li>Applied minimum keratin count threshold (15)
+        <a class="file-link" href="./attachments/filterbycount_tm.py">Filtering script (.py)</a>
+      </li>
+    </ul>
+    <a class="file-link" href="./attachments/keratin_count_tm.csv">Keratins per mammal (.csv)</a>
+
+    <figure class="fig">
+      <img src="./images/keratin_heatmap_count_tm.png" alt="Heatmap of keratin counts per mammal" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;keratin_heatmap_count_tm.png&lt;/b&gt;&lt;span&gt;Heatmap · keratin counts per mammal&lt;/span&gt;'}))">
+      <figcaption><span class="tag">Figure —</span> Keratin count distribution across mammals</figcaption>
+    </figure>
+
+    <div class="stat-strip">
+      <div class="stat"><span class="n">120</span><span class="l">organisms</span></div>
+      <div class="stat"><span class="n">4,442</span><span class="l">total keratins</span></div>
+    </div>
+
+    <div class="fig-row">
+      <figure class="fig">
+        <img src="./images/total_aa_count_tm.png" alt="Total amino acid count chart" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;total_aa_count_tm.png&lt;/b&gt;&lt;span&gt;Total AA count&lt;/span&gt;'}))">
+        <figcaption><span class="tag">Figure —</span> Total amino acid count</figcaption>
+      </figure>
+      <figure class="fig">
+        <img src="./images/keratin_conservation_tm.png" alt="Keratin conservation chart" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;keratin_conservation_tm.png&lt;/b&gt;&lt;span&gt;Keratin conservation&lt;/span&gt;'}))">
+        <figcaption><span class="tag">Figure —</span> Keratin conservation across species</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="sequence-analysis">
+    <h2 class="section-title"><span class="num">§03</span> Sequence Analysis</h2>
+
+    <ul class="lab-list">
+      <li>Performed Multiple Sequence Alignment keratin-wise on the filtered data</li>
+      <li>Terminal domains extraction and comparison:
+        <ul>
+          <li>Head and tail regions mapped using human keratins as reference on aligned sequences —
+            <a class="file-link" href="./attachments/human_positionindices.csv">Reference (.csv)</a>
+          </li>
+          <li>Extracted head and tail domains from aligned sequences</li>
+          <li>Removed dashes and gaps</li>
+        </ul>
+      </li>
+    </ul>
+
+    <figure class="fig">
+      <img src="./images/headsvstails_tm.png" alt="Heads vs tails amino acid comparison" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;headsvstails_tm.png&lt;/b&gt;&lt;span&gt;Heads vs tails — AA comparison&lt;/span&gt;'}))">
+      <figcaption><span class="tag">Figure —</span> Heads vs. tails, amino acid composition</figcaption>
+    </figure>
+
+    <h3 class="sub-title">Terminal domain length</h3>
+    <p>Average length computed for each keratin across species, compared across canonical Type I and Type II keratin pairs.</p>
+    <div class="result-note">Strong positive correlation observed — <span class="mono">Head r = 0.84</span>, <span class="mono">Tail r = 0.83</span></div>
+    <div class="fig-row">
+      <figure class="fig">
+        <img src="./images/length1_tm.png" alt="Length comparison chart 1" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;length1_tm.png&lt;/b&gt;'}))">
+      </figure>
+      <figure class="fig">
+        <img src="./images/length2_tm.png" alt="Length comparison chart 2" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;length2_tm.png&lt;/b&gt;'}))">
+      </figure>
+    </div>
+
+    <p>Direct comparison of Type I vs. Type II head and tail lengths:</p>
+    <div class="fig-row">
+      <figure class="fig">
+        <img src="./images/length22_tm.png" alt="Type I vs II length comparison 1" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;length22_tm.png&lt;/b&gt;'}))">
+      </figure>
+      <figure class="fig">
+        <img src="./images/length11_tm.png" alt="Type I vs II length comparison 2" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;length11_tm.png&lt;/b&gt;'}))">
+      </figure>
+    </div>
+
+    <h3 class="sub-title">STY frequency</h3>
+    <p>STY (Ser/Thr/Tyr) frequency computed for each keratin, compared across Type I and Type II canonical pairs.</p>
+    <div class="result-note">Head: moderate correlation <span class="mono">(r = 0.52)</span> · Tail: weak correlation <span class="mono">(r = 0.22)</span></div>
+    <div class="fig-row">
+      <figure class="fig">
+        <img src="./images/sty1_tm.png" alt="STY frequency chart 1" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;sty1_tm.png&lt;/b&gt;'}))">
+      </figure>
+      <figure class="fig">
+        <img src="./images/sty2_tm.png" alt="STY frequency chart 2" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;sty2_tm.png&lt;/b&gt;'}))">
+      </figure>
+    </div>
+
+    <h3 class="sub-title">Serine content vs. head length</h3>
+    <ul class="lab-list">
+      <li>Positive correlation between head length and serine count <span class="mono">(r = 0.67, R² = 0.45)</span></li>
+      <li>Weak negative correlation between head length and serine fraction <span class="mono">(r = -0.29, R² = 0.09)</span></li>
+    </ul>
+    <div class="fig-row">
+      <figure class="fig">
+        <img src="./images/serine1_tvm.png" alt="Serine content chart 1" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;serine1_tvm.png&lt;/b&gt;'}))">
+      </figure>
+      <figure class="fig">
+        <img src="./images/serine2_tvm.png" alt="Serine content chart 2" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;serine2_tvm.png&lt;/b&gt;'}))">
+      </figure>
+    </div>
+  </section>
+
+  <section id="coiled-coil">
+    <h2 class="section-title"><span class="num">§04</span> Coiled-Coil Region Prediction</h2>
+    <ul class="lab-list">
+      <li>Coiled-coil regions were predicted for all keratin sequences using <span class="mono">CoCoNat</span></li>
+      <li>An independent coiled-coil annotation was obtained using an MSA-based approach:
+        <ul>
+          <li>Human keratin coiled-coil boundaries (1A, 1B, 2A, 2B domains) were used as reference coordinates</li>
+          <li>These boundaries were mapped onto keratin-wise MSAs to extract the corresponding coiled-coil regions from all orthologous keratins across species</li>
+        </ul>
+      </li>
+      <li>The lengths of the CoCoNat-predicted coiled-coil regions were compared with the MSA-derived coiled-coil regions</li>
+    </ul>
+    <div class="result-note">Distribution of length differences (CoCoNat − MSA) showed a strong peak around <span class="mono">−80 aa</span>, indicating CoCoNat generally predicts shorter coiled-coil regions than the MSA-based extraction.</div>
+    <figure class="fig">
+      <img src="./images/coco_tvm.png" alt="Coiled-coil length difference distribution" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;coco_tvm.png&lt;/b&gt;&lt;span&gt;CoCoNat vs MSA length difference&lt;/span&gt;'}))">
+      <figcaption><span class="tag">Figure —</span> CoCoNat vs. MSA-derived coiled-coil length differences</figcaption>
+    </figure>
+  </section>
+
+  <section id="msa">
+    <h2 class="section-title"><span class="num">§05</span> Multiple Sequence Alignment</h2>
+    <p class="section-sub">Alignments generated using <span class="mono">MAFFT</span> for:</p>
+    <ul class="lab-list">
+      <li>Individual keratin families across all organisms (keratin-wise alignments)</li>
+      <li>All keratins within each organism (organism-wise alignments)</li>
+      <li>All Type I keratins</li>
+      <li>All Type II keratins</li>
+      <li>Complete keratin dataset (all keratins across all organisms)</li>
+    </ul>
+  </section>
+
+  <section id="phylogenetics">
+    <h2 class="section-title"><span class="num">§06</span> Phylogenetic Tree Construction</h2>
+    <ul class="lab-list">
+      <li>Maximum likelihood phylogenetic trees were constructed using <span class="mono">IQ-TREE</span></li>
+      <li>Trees were generated for the following datasets:
+        <ul>
+          <li><span class="mono">keratinwise_human</span> — individual trees for each human keratin family</li>
+          <li><span class="mono">keratinwise_nonhuman</span> — individual trees for each non-human keratin family across mammalian species</li>
+          <li><span class="mono">type1keratinmsa</span> — tree for all Type I keratin proteins</li>
+          <li><span class="mono">type2keratinmsa</span> — tree for all Type II keratin proteins</li>
+          <li><span class="mono">allkeratinmsa</span> — tree containing all keratin proteins</li>
+        </ul>
+      </li>
+      <li>The best-fit amino acid substitution model for each alignment was selected automatically (<span class="mono">MFP</span>)</li>
+    </ul>
+    <p class="figure-callout">Figure — KRT1 treefile</p>
+    <figure class="fig">
+      <img src="./images/treeexample_tvm.png" alt="KRT1 phylogenetic tree" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;treeexample_tvm.png&lt;/b&gt;&lt;span&gt;KRT1 phylogenetic tree&lt;/span&gt;'}))">
+    </figure>
+  </section>
+
+  <section id="synteny">
+    <h2 class="section-title"><span class="num">§07</span> Synteny Analysis</h2>
+
+    <h4 class="block-title">Objective</h4>
+    <p>Determine the genomic organization of keratin genes across species and identify conserved keratin loci.</p>
+
+    <h4 class="block-title">Completed Work</h4>
+    <ul class="lab-list">
+      <li>Compiled a dataset of keratin UniProt accessions across all species</li>
+      <li>Retrieved genomic coordinates using the EBI Proteins Coordinates API</li>
+      <li>Successfully obtained genomic coordinates for 4,135 accessions; 359 outdated accessions were excluded from downstream analyses</li>
+      <li>Constructed the master annotation table
+        <a class="file-link" href="./attachments/gene_coordinates_annotated_tvm.csv">gene_coordinates_annotated.csv</a>
+        containing chromosome, genomic coordinates, strand, etc.
+      </li>
+      <li>Identified approximately 11 species with corrupted genomic end coordinates caused by assembly inconsistencies</li>
+      <li>Manually validated two genuine long keratin genes (hybrid cattle KRT5 and horse KRT18) and excluded them from QC flagging</li>
+      <li>Compared end-based and start-based gap calculations, showing that corrupted end coordinates generated negative gap estimates</li>
+      <li>Start-to-start genomic distances chosen</li>
+      <li>Built a locus detection pipeline using chromosome-specific Median Absolute Deviation (MAD) thresholds, with a 300&nbsp;kb threshold for chromosomes containing fewer than five genes</li>
+    </ul>
+
+    <p>Generated outputs:</p>
+    <div>
+      <a class="file-link" href="./attachments/keratin_clusters_tvm.csv">keratin_clusters.csv</a>
+      <a class="file-link" href="./attachments/flagged_genes_tvm.csv">coordinate_qc_flagged_genes.csv</a>
+      <a class="file-link" href="./attachments/clustersummary_tvm.csv">chromosome_group_summary_cleaned.csv</a>
+    </div>
+    <p>Summarizing keratin-bearing chromosomes and assembly classifications — <span class="mono">49</span> chromosome-level species and <span class="mono">61</span> scaffold/mixed species.</p>
+
+    <div class="fig-row">
+      <figure class="fig">
+        <img src="./images/locidistribution_tvm.png" alt="Locus distribution chart" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;locidistribution_tvm.png&lt;/b&gt;&lt;span&gt;Locus distribution&lt;/span&gt;'}))">
+        <figcaption><span class="tag">Figure —</span> Distribution of keratin loci</figcaption>
+      </figure>
+      <figure class="fig">
+        <img src="./images/chr12_tvm.png" alt="Chromosome 12 synteny map" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-placeholder',innerHTML:'&lt;b&gt;chr12_tvm.png&lt;/b&gt;&lt;span&gt;Chromosome 12 synteny&lt;/span&gt;'}))">
+        <figcaption><span class="tag">Figure —</span> Chromosome 12 keratin cluster synteny</figcaption>
+      </figure>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Research notes · Mammalian keratin sequence, structural, and synteny analysis.</p>
+</footer>
+
+</body>
+</html>
