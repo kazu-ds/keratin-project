@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heptad Alignment of Keratin Coiled-Coils — Tanishq Milani</title>
+<style>
+  :root{
+    --ink: #111111;
+    --paper: #ffffff;
+    --paper-dim: #f0f0f0;
+    --line: #cccccc;
+    --accent: #111111;
+    --accent-soft: #eeeeee;
+    --data: #111111;
+    --mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --serif: 'Source Serif 4', 'Iowan Old Style', 'Georgia', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body{
+    margin:0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); line-height: 1.6; font-size: 16px;
+  }
+  header.masthead{
+    border-bottom: 1px solid var(--line);
+    padding: 2.5rem 1.5rem 1.75rem;
+  }
+  .masthead-inner{ max-width: 880px; margin: 0 auto; padding: 0 0.5rem; }
+  h1.title{
+    font-family: var(--serif); font-weight: 600; font-size: clamp(1.9rem, 4vw, 2.9rem);
+    margin: 0 0 0.5rem; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  h1.title em{ font-style: italic; }
+  .byline{ font-size: 0.95rem; color: #555555; margin: 0 0 0.25rem; }
+  .byline strong{ color: var(--ink); }
+  .wrap{ max-width: 880px; margin: 0 auto; padding: 0 1.5rem; }
+  nav.toc{ max-width: 880px; margin: 0 auto; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--line); }
+  nav.toc ol{ list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 0; font-family: var(--mono); font-size: 0.82rem; counter-reset: toc; }
+  nav.toc li{ counter-increment: toc; margin-right: 1.4rem; }
+  nav.toc li::before{ content: counter(toc, decimal-leading-zero) " "; color: var(--data); }
+  nav.toc a{ color: var(--ink); text-decoration: none; border-bottom: 1px solid transparent; }
+  nav.toc a:hover{ border-bottom-color: var(--accent); color: var(--accent); }
+  section{ padding: 2.75rem 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom: none; }
+  h2.section-title{ font-family: var(--serif); font-size: 1.65rem; font-weight: 600; margin: 0 0 0.3rem; display: flex; align-items: baseline; gap: 0.6rem; }
+  h2.section-title .num{ font-family: var(--mono); font-size: 0.95rem; color: var(--data); font-weight: 500; }
+  .section-sub{ font-size: 0.95rem; color: #555555; margin: 0 0 1.6rem; max-width: 60ch; }
+  h3.sub-title{ font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin: 2rem 0 0.85rem; padding-bottom: 0.4rem; border-bottom: 1px dashed var(--line); }
+  h4.block-title{ font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; color: var(--accent); margin: 1.6rem 0 0.75rem; }
+  p{ margin: 0 0 1rem; }
+  ul.lab-list{ margin: 0 0 1rem; padding-left: 0; list-style: none; }
+  ul.lab-list > li{ position: relative; padding-left: 1.3rem; margin-bottom: 0.55rem; }
+  ul.lab-list > li::before{ content: "→"; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
+  ul.lab-list ul{ list-style: none; padding-left: 1.2rem; margin: 0.4rem 0 0.4rem; }
+  ul.lab-list ul li{ position: relative; padding-left: 1.1rem; margin-bottom: 0.35rem; color: #333333; }
+  ul.lab-list ul li::before{ content: "–"; position: absolute; left: 0; color: #999999; }
+  code, .mono{ font-family: var(--mono); background: var(--paper-dim); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.88em; color: var(--accent); }
+  a.inline-link{ color: var(--accent); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 2px; }
+  a.inline-link:hover{ text-decoration-color: var(--accent); }
+  a.file-link{
+    display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.85rem;
+    color: var(--ink); background: var(--paper-dim); border: 1px solid var(--line); padding: 0.3rem 0.6rem;
+    border-radius: 3px; text-decoration: none; margin: 0.2rem 0.3rem 0.6rem 0;
+  }
+  a.file-link:hover{ border-color: var(--accent); color: var(--accent); }
+  a.file-link::before{ content: "⬇"; font-size: 0.85em; }
+  figure.fig{ margin: 1.4rem 0 1.8rem; }
+  figure.fig img{ display: block; max-width: 100%; height: auto; border: 1px solid var(--line); background: #fff; }
+  figure.fig figcaption{ font-family: var(--mono); font-size: 0.78rem; color: #666666; margin-top: 0.5rem; max-width: 60ch; }
+  figure.fig figcaption .tag{ color: var(--data); }
+  .fig-row{ display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; }
+  .fig-row figure.fig{ margin: 1.4rem 0 0.4rem; flex: 1 1 260px; }
+  .img-placeholder{
+    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.4rem;
+    background: repeating-linear-gradient(45deg, var(--paper-dim), var(--paper-dim) 10px, #e0e0e0 10px, #e0e0e0 20px);
+    border: 1px dashed var(--line); color: #666666; font-family: var(--mono); font-size: 0.78rem;
+    text-align: center; padding: 1.5rem 1rem;
+  }
+  .img-placeholder b{ color: var(--ink); font-size: 0.82rem; }
+  .stat-strip{ display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--line); margin: 1.5rem 0; }
+  .stat{ flex: 1 1 140px; padding: 1rem 1.2rem; border-right: 1px solid var(--line); }
+  .stat:last-child{ border-right: none; }
+  .stat .n{ font-family: var(--mono); font-size: 1.5rem; color: var(--data); font-weight: 600; display: block; }
+  .stat .l{ font-size: 0.78rem; color: #555555; }
+  .result-note{ border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 0.9rem 1.1rem; margin: 1.2rem 0; font-size: 0.94rem; }
+  .result-note .mono{ background: none; padding: 0; }
+  .figure-callout{ font-family: var(--mono); font-size: 0.8rem; color: var(--data); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+  footer{ max-width: 880px; margin: 0 auto; padding: 2.5rem 1.5rem 3.5rem; font-size: 0.85rem; color: #666666; }
+  footer a{ color: var(--accent); }
+  @media (max-width: 600px){
+    section{ padding: 2rem 0; }
+    .stat-strip{ flex-direction: column; }
+    .stat{ border-right: none; border-bottom: 1px solid var(--line); }
+    .stat:last-child{ border-bottom: none; }
+  }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <h1 class="title">Keratin Phylogeny: <em>Heptad</em> Alignment of the Coiled-Coils</h1>
+    <p class="byline"><strong>Tanishq Milani</strong> — semester work · register-aware alignment of keratin coiled-coil domains for phylogeny · <a class="inline-link" href="./index.html">← summer work</a></p>
+  </div>
+</header>
+
+<nav class="toc">
+  <ol>
+    <li><a href="#why-not-msa">Why Not Whole-Sequence MSA</a></li>
+    <li><a href="#why-structure">Why Align by Structure</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#outputs">Outputs</a></li>
+    <li><a href="#future">Future Work</a></li>
+  </ol>
+</nav>
+
+<div class="wrap">
+
+  <section id="why-not-msa">
+    <h2 class="section-title"><span class="num">§00</span> Why Not a Whole-Sequence MSA</h2>
+    <p>Keratins have a conserved central coiled-coil flanked by head and tail domains. The heads and tails are low-complexity, glycine/serine-rich and very variable in length between keratins and species, so an MSA of the full sequences is filled with gaps from these regions.</p>
+    <ul class="lab-list">
+      <li>Trees built from whole-sequence MSAs showed this problem: several branches were unrealistically long, due to poorly aligned head and tail regions</li>
+      <li>Therefore only the coiled-coil domain is used. Heads and tails will be attached back later</li>
+    </ul>
+  </section>
+
+  <section id="why-structure">
+    <h2 class="section-title"><span class="num">§01</span> Why Align by Structure Instead of MSA</h2>
+    <p>Keratins form heterodimers in which a Type I and a Type II helix wind around each other as a coiled coil. The sequence repeats every seven residues (a heptad, positions <span class="mono">a b c d e f g</span>):</p>
+    <ul class="lab-list">
+      <li><span class="mono">a</span>, <span class="mono">d</span>: mostly hydrophobic, they form the core between the two helices</li>
+      <li><span class="mono">e</span>, <span class="mono">g</span>: often charged, they form salt bridges between the chains</li>
+      <li><span class="mono">b</span>, <span class="mono">c</span>, <span class="mono">f</span>: face the solvent</li>
+    </ul>
+    <p>The helices pack by knobs-into-holes packing. Each <span class="mono">a</span> or <span class="mono">d</span> side chain is a "knob" that fits into a "hole" formed by four residues on the partner helix, like a ball and socket.</p>
+    <div class="result-note">Because a residue's role depends on its heptad position, equivalent positions should be compared: <span class="mono">a</span> with <span class="mono">a</span>, <span class="mono">d</span> with <span class="mono">d</span>. A standard MSA does not know about the register; it can shift sequences by a few residues and line up a core residue against a surface residue. We therefore align by heptad register instead.</div>
+  </section>
+
+  <section id="data">
+    <h2 class="section-title"><span class="num">§02</span> Data</h2>
+    <div class="stat-strip">
+      <div class="stat"><span class="n">4494</span><span class="l">keratin sequences</span></div>
+      <div class="stat"><span class="n">64</span><span class="l">keratins</span></div>
+      <div class="stat"><span class="n">~121</span><span class="l">mammal species</span></div>
+    </div>
+    <ul class="lab-list">
+      <li><span class="mono">CoCoNat</span> per-residue coiled-coil predictions for all sequences</li>
+      <li>Each residue has a predicted heptad position (<span class="mono">a–g</span>) or is labelled non-coil (<span class="mono">i</span>)</li>
+    </ul>
+  </section>
+
+  <section id="method">
+    <h2 class="section-title"><span class="num">§03</span> Method</h2>
+    <ul class="lab-list">
+      <li>Each sequence is split into coiled-coil segments (consecutive runs of <span class="mono">a–g</span>)</li>
+      <li>Each segment is cut into heptads. A skipped position (for example <span class="mono">abc--fg</span>) becomes a gap. No residue is removed</li>
+      <li>Simply stacking heptads in order (heptad 1 under heptad 1) was not used, because a single missing or extra heptad shifts every heptad after it out of place</li>
+      <li>Within each segment, sequences were aligned with a heptad-level Needleman–Wunsch alignment:
+        <ul>
+          <li>The unit of alignment is a whole heptad rather than a single residue, so slot <span class="mono">a</span> always faces slot <span class="mono">a</span> and a missing heptad is a 7-residue gap</li>
+          <li>Two heptads are scored by summing <span class="mono">BLOSUM62</span> scores over their 7 slots, and gaps carry a penalty</li>
+          <li>Each sequence is aligned to the representative sequence of its group (mostly human), and the pairwise alignments are merged into one multiple alignment (centre-star alignment)</li>
+        </ul>
+      </li>
+      <li>Columns that are a gap in every sequence are removed</li>
+      <li>Heptads per segment and in total are tabulated for every sequence</li>
+    </ul>
+
+    <h4 class="block-title">Sample KRT2 alignments</h4>
+    <figure class="fig">
+      <img src="./images/krt2_heptad_needleman_wunsch.png" alt="KRT2 heptad-based Needleman-Wunsch alignment">
+      <figcaption><span class="tag">Figure —</span> Heptad-based Needleman–Wunsch: the conserved motif lines up in one column across species</figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="./images/krt2_simple_heptad_stacking.png" alt="KRT2 simple heptad stacking alignment">
+      <figcaption><span class="tag">Figure —</span> Simple heptad stacking, for comparison</figcaption>
+    </figure>
+  </section>
+
+  <section id="outputs">
+    <h2 class="section-title"><span class="num">§04</span> Outputs</h2>
+    <p><span class="mono">results_all_segments</span></p>
+  </section>
+
+  <section id="future">
+    <h2 class="section-title"><span class="num">§05</span> Future Work</h2>
+    <ul class="lab-list">
+      <li>Build trees from the coiled-coil alignments:
+        <ul>
+          <li>keratin-wise (one tree per keratin across species)</li>
+          <li>species-wise</li>
+          <li>Type I vs Type II keratins</li>
+        </ul>
+      </li>
+      <li>Compare these trees with the earlier whole-sequence trees, especially the long-branch cases</li>
+      <li>Attach the head and tail domains back to the coiled-coil alignment</li>
+    </ul>
+  </section>
+
+</div>
+
+<footer>
+  <p>Research notes · Heptad-register alignment of keratin coiled-coils · <a href="./index.html">Summer work</a></p>
+</footer>
+
+</body>
+</html>
