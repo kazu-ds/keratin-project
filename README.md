@@ -1,4 +1,4 @@
-# Mammalian Keratin Project
+# Mammalian Keratin Analysis
 
 Sequence, structural, phylogenetic and synteny analysis of keratin genes across mammals.
 
