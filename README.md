@@ -7,7 +7,7 @@ Sequence, structural, phylogenetic and synteny analysis of keratin genes across 
 | | Project | Focus | Web page |
 |---|---|---|---|
 | 1 | [Summer '26](#summer-26-mammalian-keratin-analysis) | Dataset building, Type I/II classification, head/tail analysis, coiled-coil prediction, MSAs, phylogenies, synteny | [index.html](https://kazu-ds.github.io/keratin-project/) |
-| 2 | [Semester Project '26](#semester-project-26-heptad-alignment-of-the-coiled-coils) | Heptad-register alignment of the coiled-coil domains as a basis for better phylogenies | [august26.html](https://kazu-ds.github.io/keratin-project/august26.html) |
+| 2 | [August'26 Semester project](#semester-project-26-heptad-alignment-of-the-coiled-coils) | Heptad-register alignment of the coiled-coil domains as a basis for better phylogenies | [august26.html](https://kazu-ds.github.io/keratin-project/august26.html) |
 
 ---
 
