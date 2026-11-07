@@ -96,109 +96,156 @@
     .stat:last-child{ border-bottom: none; }
   }
   @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
-</style>
+  table.simple{ border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  table.simple th, table.simple td{ border: 1px solid var(--line); padding: 0.35rem 0.7rem; text-align: left; }
+  .section-sub{ max-width: 70ch; }</style>
 </head>
 <body>
 
 <header class="masthead">
   <div class="masthead-inner">
     <h1 class="title">Keratin Phylogeny: <em>Heptad</em> Alignment of the Coiled-Coils</h1>
-    <p class="byline"><strong>Tanishq Milani</strong> — semester work · register-aware alignment of keratin coiled-coil domains for phylogeny · <a class="inline-link" href="./index.html">← summer work</a></p>
+    <p class="byline"><strong>Tanishq Milani</strong> — semester work · register-aware alignment of keratin coiled-coil domains · <a class="inline-link" href="./index.html">← summer work</a></p>
   </div>
 </header>
 
 <nav class="toc">
   <ol>
-    <li><a href="#why-not-msa">Why Not Whole-Sequence MSA</a></li>
-    <li><a href="#why-structure">Why Align by Structure</a></li>
-    <li><a href="#data">Data</a></li>
-    <li><a href="#method">Method</a></li>
-    <li><a href="#outputs">Outputs</a></li>
-    <li><a href="#future">Future Work</a></li>
+    <li><a href="#brief">In Brief</a></li>
+    <li><a href="#idea">Idea &amp; Method</a></li>
+    <li><a href="#2a">Coil 2A</a></li>
+    <li><a href="#krt18">KRT18 Fix</a></li>
+    <li><a href="#lengths">Type I vs II Lengths</a></li>
+    <li><a href="#linkers">Linkers</a></li>
+    <li><a href="#pairs">Pair Frequencies</a></li>
+    <li><a href="#next">Limits &amp; Next</a></li>
   </ol>
 </nav>
 
 <div class="wrap">
 
-  <section id="why-not-msa">
-    <h2 class="section-title"><span class="num">§00</span> Why Not a Whole-Sequence MSA</h2>
-    <p>Keratins have a conserved central coiled-coil flanked by head and tail domains. The heads and tails are low-complexity, glycine/serine-rich and very variable in length between keratins and species, so an MSA of the full sequences is filled with gaps from these regions.</p>
-    <ul class="lab-list">
-      <li>Trees built from whole-sequence MSAs showed this problem: several branches were unrealistically long, due to poorly aligned head and tail regions</li>
-      <li>Therefore only the coiled-coil domain is used. Heads and tails will be attached back later</li>
-    </ul>
-  </section>
-
-  <section id="why-structure">
-    <h2 class="section-title"><span class="num">§01</span> Why Align by Structure Instead of MSA</h2>
-    <p>Keratins form heterodimers in which a Type I and a Type II helix wind around each other as a coiled coil. The sequence repeats every seven residues (a heptad, positions <span class="mono">a b c d e f g</span>):</p>
-    <ul class="lab-list">
-      <li><span class="mono">a</span>, <span class="mono">d</span>: mostly hydrophobic, they form the core between the two helices</li>
-      <li><span class="mono">e</span>, <span class="mono">g</span>: often charged, they form salt bridges between the chains</li>
-      <li><span class="mono">b</span>, <span class="mono">c</span>, <span class="mono">f</span>: face the solvent</li>
-    </ul>
-    <p>The helices pack by knobs-into-holes packing. Each <span class="mono">a</span> or <span class="mono">d</span> side chain is a "knob" that fits into a "hole" formed by four residues on the partner helix, like a ball and socket.</p>
-    <div class="result-note">Because a residue's role depends on its heptad position, equivalent positions should be compared: <span class="mono">a</span> with <span class="mono">a</span>, <span class="mono">d</span> with <span class="mono">d</span>. A standard MSA does not know about the register; it can shift sequences by a few residues and line up a core residue against a surface residue. We therefore align by heptad register instead.</div>
-  </section>
-
-  <section id="data">
-    <h2 class="section-title"><span class="num">§02</span> Data</h2>
+  <section id="brief">
+    <h2 class="section-title"><span class="num">§00</span> In Brief</h2>
+    <p class="section-sub">Keratin coiled-coils aligned by heptad register (a–g) across mammals, as a basis for better phylogenies. Everything below uses CoCoNat's register calls, plus 2A, which CoCoNat misses.</p>
     <div class="stat-strip">
-      <div class="stat"><span class="n">4494</span><span class="l">keratin sequences</span></div>
+      <div class="stat"><span class="n">4494</span><span class="l">sequences</span></div>
       <div class="stat"><span class="n">64</span><span class="l">keratins</span></div>
-      <div class="stat"><span class="n">~121</span><span class="l">mammal species</span></div>
+      <div class="stat"><span class="n">~121</span><span class="l">mammals</span></div>
+      <div class="stat"><span class="n">54</span><span class="l">keratins with 2A added</span></div>
     </div>
     <ul class="lab-list">
-      <li><span class="mono">CoCoNat</span> per-residue coiled-coil predictions for all sequences</li>
-      <li>Each residue has a predicted heptad position (<span class="mono">a–g</span>) or is labelled non-coil (<span class="mono">i</span>)</li>
+      <li><b>2A added.</b> CoCoNat never calls coil 2A (19 aa). It is carried over from ortholog alignments and its register is inferred; the same frame fits all 54 keratins</li>
+      <li><b>KRT18 fixed.</b> CoCoNat merged 1A + L1 + 1B in 92 of 103 KRT18 sequences; L1 was cut out and all alignments re-run</li>
+      <li><b>Type I rods are longer than type II</b> by about 2 heptads (35 vs 33), but type II proteins are longer overall (about 534 vs 452 aa). 2A is 3 heptads in every keratin</li>
+      <li><b>Linkers differ by type, not by partner.</b> L12 is 61% identical within a type and 14% between types; canonical partners are no more similar than random type I × II pairs</li>
+      <li><b>Pair-frequency heatmaps</b> for the 7 canonical dimers show the expected core: Leu–Leu at d–d' (40%) and Ile–Leu at a–a' (23%)</li>
     </ul>
   </section>
 
-  <section id="method">
-    <h2 class="section-title"><span class="num">§03</span> Method</h2>
+  <section id="idea">
+    <h2 class="section-title"><span class="num">§01</span> Idea &amp; Method</h2>
     <ul class="lab-list">
-      <li>Each sequence is split into coiled-coil segments (consecutive runs of <span class="mono">a–g</span>)</li>
-      <li>Each segment is cut into heptads. A skipped position (for example <span class="mono">abc--fg</span>) becomes a gap. No residue is removed</li>
-      <li>Simply stacking heptads in order (heptad 1 under heptad 1) was not used, because a single missing or extra heptad shifts every heptad after it out of place</li>
-      <li>Within each segment, sequences were aligned with a heptad-level Needleman–Wunsch alignment:
-        <ul>
-          <li>The unit of alignment is a whole heptad rather than a single residue, so slot <span class="mono">a</span> always faces slot <span class="mono">a</span> and a missing heptad is a 7-residue gap</li>
-          <li>Two heptads are scored by summing <span class="mono">BLOSUM62</span> scores over their 7 slots, and gaps carry a penalty</li>
-          <li>Each sequence is aligned to the representative sequence of its group (mostly human), and the pairwise alignments are merged into one multiple alignment (centre-star alignment)</li>
-        </ul>
-      </li>
-      <li>Columns that are a gap in every sequence are removed</li>
-      <li>Heptads per segment and in total are tabulated for every sequence</li>
+      <li><b>Why not a whole-sequence MSA:</b> heads and tails are low-complexity and very variable in length, so they fill the alignment with gaps and give unrealistically long branches. Only the coiled-coil rod is used; heads and tails will be attached later</li>
+      <li><b>Why align by heptad:</b> a residue's role depends on its position. <span class="mono">a</span>/<span class="mono">d</span> are the hydrophobic core, <span class="mono">e</span>/<span class="mono">g</span> are often charged and form salt bridges, <span class="mono">b</span>/<span class="mono">c</span>/<span class="mono">f</span> face the solvent. An ordinary MSA can line a core residue up with a surface one</li>
+      <li><b>Method:</b> CoCoNat register per residue → coiled-coil segments → heptads (a skipped position becomes a gap) → heptad-level Needleman–Wunsch with BLOSUM62 summed over the 7 slots, centre-star merge, so slot <span class="mono">a</span> always faces slot <span class="mono">a</span> and a missing heptad is a 7-residue gap</li>
     </ul>
-
-    <h4 class="block-title">Sample KRT2 alignments</h4>
-    <figure class="fig">
-      <img src="./images/krt2_heptad_needleman_wunsch.png" alt="KRT2 heptad-based Needleman-Wunsch alignment">
-      <figcaption><span class="tag">Figure —</span> Heptad-based Needleman–Wunsch: the conserved motif lines up in one column across species</figcaption>
-    </figure>
-    <figure class="fig">
-      <img src="./images/krt2_simple_heptad_stacking.png" alt="KRT2 simple heptad stacking alignment">
-      <figcaption><span class="tag">Figure —</span> Simple heptad stacking, for comparison</figcaption>
-    </figure>
+    <div class="fig-row">
+      <figure class="fig">
+        <img src="./images/krt2_heptad_needleman_wunsch.png" alt="KRT2 heptad Needleman-Wunsch alignment">
+        <figcaption><span class="tag">KRT2 —</span> heptad-level alignment: the conserved motif lines up in one column</figcaption>
+      </figure>
+      <figure class="fig">
+        <img src="./images/krt2_simple_heptad_stacking.png" alt="KRT2 simple heptad stacking">
+        <figcaption><span class="tag">KRT2 —</span> simple stacking, for comparison</figcaption>
+      </figure>
+    </div>
   </section>
 
-  <section id="outputs">
-    <h2 class="section-title"><span class="num">§04</span> Outputs</h2>
-    <p><span class="mono">results_all_segments</span></p>
-  </section>
-
-  <section id="future">
-    <h2 class="section-title"><span class="num">§05</span> Future Work</h2>
+  <section id="2a">
+    <h2 class="section-title"><span class="num">§02</span> Adding Coil 2A</h2>
+    <p class="section-sub">CoCoNat's "coil 2" is really 2B, and it starts about 18 residues later than the annotated start. Coil 2A, the short first part of coil 2, is never called.</p>
     <ul class="lab-list">
-      <li>Build trees from the coiled-coil alignments:
-        <ul>
-          <li>keratin-wise (one tree per keratin across species)</li>
-          <li>species-wise</li>
-          <li>Type I vs Type II keratins</li>
-        </ul>
-      </li>
-      <li>Compare these trees with the earlier whole-sequence trees, especially the long-branch cases</li>
-      <li>Attach the head and tail domains back to the coiled-coil alignment</li>
+      <li><b>Carry-over:</b> the human 2A (19 residues, from the human domain table) is mapped onto each keratin's FAMSA ortholog alignment; every other species' residues in those columns are its 2A. Nothing is re-predicted per species, and CoCoNat's own blocks are copied unchanged</li>
+      <li><b>Register is inferred:</b> all 7 frames were scored by hydrophobics at a/d. All 54 keratins give the same frame, <span class="mono">cdefgabcdefgabcdefg</span> (3 heptads)</li>
+      <li><b>Check:</b> PCOILS agrees with this register at 97–100% of the residues it calls confidently (chance 14%). This is a consistency check, not an independent one, because PCOILS also uses the hydrophobic pattern</li>
+      <li><b>Coverage:</b> 4378 sequences, 4332 with a complete gapless 2A, median identity to human 0.95. FAMSA and MAFFT agree on 100% (median) of 2A residues</li>
+      <li>KRT13's row in the domain table was incomplete; its boundaries were inferred by aligning it with 10 human type I keratins (all agree)</li>
+    </ul>
+    <div class="result-note">Not checked against a structure. Published vimentin structures describe the first half of coil 2 as a hendecad (11-residue) bundle rather than a classic heptad coiled coil, so the 2A register is a working assumption.</div>
+  </section>
+
+  <section id="krt18">
+    <h2 class="section-title"><span class="num">§03</span> KRT18: Cutting L1 Out</h2>
+    <ul class="lab-list">
+      <li>CoCoNat called 1A + L1 + 1B as one coil in 92 of 103 KRT18 sequences, which would put linker residues into the heptad grid</li>
+      <li>In a copy of the files, the L1 residues were set to non-coil: the run with coil probability &lt; 0.9 around the lowest-probability residue (89 sequences; human residues 116–127). In 3 sequences with no residue below 0.9, the human L1 carried over by alignment was cut instead</li>
+      <li>KRT18 was re-aligned, and the keratin-wise, type I/II and species-wise alignments were re-run with it (<span class="mono">*_L1fix</span> folders). The originals are untouched</li>
+    </ul>
+  </section>
+
+  <section id="lengths">
+    <h2 class="section-title"><span class="num">§04</span> Type I vs Type II Rod Lengths</h2>
+    <p class="section-sub">Heptads per block with 2A included; one point per keratin (median over species); 201 outlier sequences left out.</p>
+    <figure class="fig">
+      <img src="./images/rod_length_type_I_vs_II.png" alt="Heptads per block, type I vs type II">
+      <figcaption><span class="tag">Figure —</span> 1A, 1B, 2A, 2B, total rod heptads and protein length by keratin type</figcaption>
+    </figure>
+    <ul class="lab-list">
+      <li>Type I has more rod heptads: 35 vs 33 (p = 1e-6). Medians: 1A 5 vs 4, 1B 14 vs 13, 2B 14 vs 13</li>
+      <li>The rod is conserved by design: 2A is 3 heptads in every keratin of both types</li>
+      <li>Type II proteins are longer overall (about 534 vs 452 aa), so the extra length is in the heads and tails</li>
+      <li>Canonical partners differ by 1–3 heptads; KRT18/KRT8 is the only pair where type II is longer</li>
+    </ul>
+    <figure class="fig">
+      <img src="./images/rod_length_canonical_pairs.png" alt="Canonical pairs, rod heptads and protein length">
+      <figcaption><span class="tag">Figure —</span> the seven canonical type I / type II pairs</figcaption>
+    </figure>
+  </section>
+
+  <section id="linkers">
+    <h2 class="section-title"><span class="num">§05</span> Linkers L1, L12, L2</h2>
+    <p class="section-sub">Linkers are cut from the alignments by the human boundaries (2A excluded). Partner pairs: KRT10/1, 12/3, 14/5, 16/6A, 17/6B, 13/4, 18/8.</p>
+    <figure class="fig">
+      <img src="./images/conservation_by_region.png" alt="Conservation of coils and linkers">
+      <figcaption><span class="tag">Figure —</span> identity to human across mammals, per block; line = median over keratins</figcaption>
+    </figure>
+    <ul class="lab-list">
+      <li>Within a keratin the linkers are as conserved as the coils across mammals (L1 0.91, L12 0.94, L2 1.00 identity to human)</li>
+      <li>Across keratins they separate by type: L12 is 61% identical within a type and 14% between types; L1 36% vs 18%; L2 68% vs 36%</li>
+      <li>L1 and L12 are richer in Pro/Gly in type I (0.20 and 0.19) than in type II (0.05 and 0.00)</li>
+      <li>Consensus L12: type I <span class="mono">Q-.GG.VNVE.DAAPGV</span>, type II <span class="mono">HISDTSVVLSMDNNR.L</span>; L2: <span class="mono">NRRDAE.W</span> vs <span class="mono">SRAEAEAW</span></li>
+    </ul>
+    <figure class="fig">
+      <img src="./images/linker_partner_identity.png" alt="Linker identity between canonical partners">
+      <figcaption><span class="tag">Figure —</span> canonical partners (black) against all other type I × II combinations (grey)</figcaption>
+    </figure>
+    <div class="result-note">Null result: partner linkers are no more similar than random type I × II pairs (permutation p = 0.25, 0.61, 0.51 for L1, L12, L2). Partner identity is 0.16, 0.19, 0.39 against 0.14, 0.16, 0.36 for all pairs.</div>
+  </section>
+
+  <section id="pairs">
+    <h2 class="section-title"><span class="num">§06</span> Pair-Frequency Heatmaps</h2>
+    <p class="section-sub">Same kind of figure as Fig 3-3 of Neelesh Soni's thesis, for keratin dimers in all species instead of human only.</p>
+    <ul class="lab-list">
+      <li>Chain I and chain II residues are paired at the same position (domain and offset in 1A, 1B, 2A, 2B) in the same species, for the 7 canonical dimers</li>
+      <li>A pair is counted in register r only when both residues carry the letter r (a–a', b–b', … g–g'); about 14,000–15,000 pairs per register</li>
+      <li>Colour is the percent of all pairs in that register (scale 0, 0.2, 0.8, 10, 40, 100)</li>
+    </ul>
+    <figure class="fig">
+      <img src="./images/pair_frequency_a_to_g.png" alt="Pair-frequency heatmaps for registers a to g">
+      <figcaption><span class="tag">Figure —</span> pairwise residue frequency at a–a' to g–g'</figcaption>
+    </figure>
+    <ul class="lab-list">
+      <li><span class="mono">d–d'</span> is dominated by Leu–Leu (39.8%); <span class="mono">a–a'</span> by Ile–Leu (22.5%)</li>
+      <li><span class="mono">e–e'</span> shows Lys–Arg (15.3%) and Glu–Glu (14.4%); <span class="mono">g–g'</span> Glu–Glu (14.2%)</li>
+    </ul>
+    <div class="result-note">Descriptive only. There is no comparison set (the thesis compares against a coiled-coil database), so most cells are simply green (rare).</div>
+  </section>
+
+  <section id="next">
+    <h2 class="section-title"><span class="num">§07</span> Limits &amp; Next</h2>
+    <ul class="lab-list">
+      <li><b>Limits:</b> CoCoNat's coil calls define everything except 2A; the 2A register is inferred; 2A boundaries in other species come from homology to human; the types of a few keratins (KRT42, KRT222 as type I; KRT2c, KRT87–90 as type II) are inferred</li>
+      <li><b>Next:</b> trees (keratin-wise, species-wise, type I vs II) from the alignments with IQ-TREE; attach heads and tails; test which rod block carries the signal that distinguishes canonical partners from non-partners across the 121 mammals</li>
     </ul>
   </section>
 
